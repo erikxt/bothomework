@@ -21,6 +21,7 @@ public class BotService {
 
     public QaEntity getAnswer(String idx) {
         // 增加计数
+        redisTemplate.opsForValue().increment(getAccessCount(idx), 1);
         String count = redisTemplate.opsForValue().get(getAccessCount(idx));
         Integer total = Integer.parseInt(count == null ? "0" : count);
 
