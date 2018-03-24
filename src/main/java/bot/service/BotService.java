@@ -1,8 +1,8 @@
 package bot.service;
 
+import bot.Util.QaDataUtil;
 import bot.entity.QaEntity;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.Collections;
@@ -13,7 +13,7 @@ import java.util.Map;
 public class BotService {
 
     @Autowired
-    private RedisTemplate<String, String> redisTemplate;
+    QaDataUtil qaDataUtil;
 
     public List<Map> getQuestions(String words) {
 
@@ -22,18 +22,12 @@ public class BotService {
 
     public QaEntity getAnswer(String idx) {
         // 增加计数
-        redisTemplate.opsForValue().increment(getAccessCount(idx), 1);
-        String count = redisTemplate.opsForValue().get(getAccessCount(idx));
-        Integer total = Integer.parseInt(count == null ? "0" : count);
+        qaDataUtil.increAccessCount(idx);
 
         // 返回答案
         QaEntity mock = new QaEntity();
         mock.setIndex(1);
-        mock.setAnswer(count);
+        mock.setAnswer(String.valueOf(qaDataUtil.getAccessCount(idx)));
         return mock;
-    }
-
-    private String getAccessCount(String idx) {
-        return String.format("count:%s", idx);
     }
 }

@@ -7,6 +7,8 @@ public class QaEntity {
 
     private Integer index;
 
+    private String question;
+
     private String answer;
 
     private String keywords;
@@ -17,6 +19,14 @@ public class QaEntity {
 
     public void setIndex(Integer index) {
         this.index = index;
+    }
+
+    public String getQuestion() {
+        return question;
+    }
+
+    public void setQuestion(String question) {
+        this.question = question;
     }
 
     public String getAnswer() {
