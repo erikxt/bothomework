@@ -16,6 +16,7 @@ public class BotService {
     private RedisTemplate<String, String> redisTemplate;
 
     public List<Map> getQuestions(String words) {
+
         return Collections.EMPTY_LIST;
     }
 
