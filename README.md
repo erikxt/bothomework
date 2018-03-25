@@ -13,13 +13,13 @@ cd bothomework
 ```
 ### 启动redis容器，开启持久化
 ```
-docker run --name some-redis -p "6379:6379" -d redis redis-server --appendonly yes
+docker run --name some-redis -p 6379:6379 -d redis redis-server --appendonly yes
 ```
 ### 构建docker镜像
 ```
 mvn clean package docker:build
 ```
-### 运行docker镜像
+### 运行构建的应用容器，并链接到redis容器
 ```
-docker run -p 8080:8080 bot-homework
+docker run -p 8080:8080 --link some-redis:redis bot-homework 
 ```

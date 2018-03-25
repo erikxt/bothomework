@@ -35,4 +35,8 @@ public class Response {
     public static Response getSuccessResp(Object data) {
         return new Response(0, data);
     }
+
+    public static Response getErrorResp(Object data) {
+        return new Response(-1, data);
+    }
 }

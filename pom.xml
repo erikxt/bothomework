@@ -20,7 +20,6 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-redis</artifactId>
         </dependency>
-
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-thymeleaf</artifactId>
@@ -29,6 +28,15 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-jpa</artifactId>
+        </dependency>
+        <!-- Use MySQL Connector-J -->
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
         </dependency>
 
         <!--<dependency>
@@ -59,20 +67,6 @@
             <version>7.1.0</version>
         </dependency>
 
-        <!--高亮 -->
-        <dependency>
-            <groupId>org.apache.lucene</groupId>
-            <artifactId>lucene-highlighter</artifactId>
-            <version>7.1.0</version>
-        </dependency>
-
-        <!--smartcn 中文分词器 SmartChineseAnalyzer  smartcn分词器 需要lucene依赖 且和lucene版本同步-->
-        <dependency>
-            <groupId>org.apache.lucene</groupId>
-            <artifactId>lucene-analyzers-smartcn</artifactId>
-            <version>7.1.0</version>
-        </dependency>
-
         <!--ik-analyzer 中文分词器-->
         <dependency>
             <groupId>cn.bestwu</groupId>
@@ -80,25 +74,18 @@
             <version>5.1.0</version>
         </dependency>
 
-        <!--MMSeg4j 分词器-->
+        <!-- https://mvnrepository.com/artifact/org.ansj/ansj_seg -->
         <dependency>
-            <groupId>com.chenlb.mmseg4j</groupId>
-            <artifactId>mmseg4j-solr</artifactId>
-            <version>2.4.0</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.apache.solr</groupId>
-                    <artifactId>solr-core</artifactId>
-                </exclusion>
-            </exclusions>
+            <groupId>org.ansj</groupId>
+            <artifactId>ansj_seg</artifactId>
+            <version>5.1.6</version>
         </dependency>
-    </dependencies>
 
+    </dependencies>
 
     <properties>
         <java.version>1.8</java.version>
     </properties>
-
 
     <build>
         <plugins>

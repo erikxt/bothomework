@@ -1,25 +1,38 @@
 package bot.entity;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
 /**
  * 问答库实体
  */
+@Entity
+@Table(name = "qadata")
 public class QaEntity {
 
-    private Integer index;
+    @Id
+    @Column(name = "id")
+    private Integer id;
 
+    @Column(name = "question")
     private String question;
 
+    @Column(name = "answer")
     private String answer;
 
+    @Column(name = "keywords")
     private String keywords;
 
-    public Integer getIndex() {
-        return index;
+    public Integer getId() {
+        return id;
     }
 
-    public void setIndex(Integer index) {
-        this.index = index;
+    public void setId(Integer id) {
+        this.id = id;
     }
+
     public String getQuestion() {
         return question;
     }
