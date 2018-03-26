@@ -2,29 +2,21 @@ package bot.service;
 
 import bot.entity.QaEntity;
 import bot.repository.QaRepository;
+import bot.repository.RedisRepository;
 import org.apache.log4j.Logger;
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.TokenStream;
 import org.apache.lucene.analysis.core.WhitespaceAnalyzer;
 import org.apache.lucene.analysis.tokenattributes.CharTermAttribute;
-import org.apache.lucene.document.Document;
-import org.apache.lucene.document.Field;
-import org.apache.lucene.document.StringField;
-import org.apache.lucene.document.TextField;
-import org.apache.lucene.index.DirectoryReader;
-import org.apache.lucene.index.IndexReader;
-import org.apache.lucene.index.IndexWriter;
-import org.apache.lucene.index.IndexWriterConfig;
+import org.apache.lucene.document.*;
+import org.apache.lucene.index.*;
 import org.apache.lucene.queryparser.classic.ParseException;
 import org.apache.lucene.queryparser.classic.QueryParser;
-import org.apache.lucene.search.IndexSearcher;
-import org.apache.lucene.search.Query;
-import org.apache.lucene.search.ScoreDoc;
-import org.apache.lucene.search.TopDocs;
+import org.apache.lucene.search.*;
 import org.apache.lucene.store.Directory;
+import org.apache.lucene.store.FSDirectory;
 import org.apache.lucene.store.RAMDirectory;
 import org.springframework.stereotype.Service;
-import org.wltea.analyzer.dic.Dictionary;
 import org.wltea.analyzer.lucene.IKAnalyzer;
 
 import javax.annotation.PostConstruct;
@@ -32,7 +24,10 @@ import javax.annotation.PreDestroy;
 import javax.annotation.Resource;
 import java.io.IOException;
 import java.io.StringReader;
-import java.util.*;
+import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 @Service
 public class SearchService {
@@ -41,6 +36,9 @@ public class SearchService {
 
     @Resource
     private QaRepository qaRepository;
+
+    @Resource
+    private RedisRepository redisRepository;
 
     private Directory directory;
 
@@ -53,31 +51,47 @@ public class SearchService {
     @PostConstruct
     public void setUp() throws IOException {
         //索引存放的位置，设置在当前目录中
-//        directory = FSDirectory.open(Pathsths.get("indexDir/"));
+//        directory = FSDirectory.open(Paths.get("indexDir/"));
         directory = new RAMDirectory();
         ikAnalyzer = new IKAnalyzer();
-        IndexWriterConfig indexWriterConfig = new IndexWriterConfig(new WhitespaceAnalyzer());
-        indexWriterConfig.setOpenMode(IndexWriterConfig.OpenMode.CREATE_OR_APPEND);
-        try (IndexWriter indexWriter = new IndexWriter(directory, indexWriterConfig)) {
-            init(indexWriter);
-        }
+        reloadIndex();
+
         //创建索引的读取器
         indexReader = DirectoryReader.open(directory);
         //创建一个索引的查找器，来检索索引库
         indexSearcher = new IndexSearcher(indexReader);
     }
 
-    private void init(IndexWriter indexWriter) throws IOException {
+    public void reloadIndex() {
+        try {
+            IndexWriterConfig indexWriterConfig = new IndexWriterConfig(new WhitespaceAnalyzer());
+            indexWriterConfig.setOpenMode(IndexWriterConfig.OpenMode.CREATE_OR_APPEND);
+            try (IndexWriter indexWriter = new IndexWriter(directory, indexWriterConfig)) {
+                initIndexs(indexWriter);
+                // indexWriter.flush();
+                // indexWriter.commit();
+            }
+        } catch (IOException e) {
+            logger.error("IO error ", e);
+        }
+    }
+
+    private void initIndexs(IndexWriter indexWriter) throws IOException {
         List<QaEntity> allQaEntities = qaRepository.findAll();
+        Map<String, Integer> map = redisRepository.getAllAccessCountMap();
         for (QaEntity qaEntity : allQaEntities) {
             Document doc = new Document();
-            doc.add(new StringField("ID", qaEntity.getId().toString(), Field.Store.YES));
+            doc.add(new StringField("id", qaEntity.getId().toString(), Field.Store.YES));
             // 关键字用逗号分词即可  替换成一个空格方便处理
             String processKeywords = qaEntity.getKeywords().replaceAll("，", ",")
                     .replaceAll(",", " ").toLowerCase();
-            printAnalyzerDoc(processKeywords);
+            // printAnalyzerDoc(processKeywords);
             doc.add(new TextField("keywords", processKeywords, Field.Store.NO));
-            indexWriter.addDocument(doc);
+            Integer count = map.get(qaEntity.getId().toString());
+            doc.add(new IntPoint("counts", count != null ? count : 0));
+            doc.add(new NumericDocValuesField("counts", count != null ? count : 0));
+            // 防止重复索引
+            indexWriter.updateDocument(new Term("id", qaEntity.getId()), doc);
         }
     }
 
@@ -96,9 +110,14 @@ public class SearchService {
         QueryParser queryParser = new QueryParser("keywords", ikAnalyzer);
         Query query = null;
         TopDocs topDocs = null;
+        BooleanClause.Occur[] flags = {BooleanClause.Occur.SHOULD,
+                BooleanClause.Occur.FILTER};
         try {
+//            query = MultiFieldQueryParser.parse(words, new String[]{"keywords", "count"}, flags, ikAnalyzer);
             query = queryParser.parse(words);
-            topDocs = indexSearcher.search(query, 5);
+            Sort sort = new Sort(new SortField("keywords", SortField.Type.SCORE), new SortField("counts", SortField
+                    .Type.INT, true));
+            topDocs = indexSearcher.search(query, 5, sort);
         } catch (ParseException e) {
             e.printStackTrace();
         }
@@ -111,8 +130,8 @@ public class SearchService {
             Document document = indexSearcher.doc(scoreDoc.doc);
             /*logger.info("id：" + document.get("ID"));*/
             /*logger.info("" + indexSearcher.explain(query, scoreDoc.doc));*/
-            logger.info(document.get("ID") + " " + scoreDoc.score);
-            ret.add(document.get("ID"));
+            logger.info(document.get("id") + " " + scoreDoc.score);
+            ret.add(document.get("id"));
         }
         return ret;
     }

@@ -35,7 +35,7 @@ public class BotController {
     }
 
     @RequestMapping("/getanswer")
-    public Response getAnswer(@RequestParam(value = "id") Integer id) {
+    public Response getAnswer(@RequestParam(value = "id") String id) {
         QaEntity res = botService.getAnswer(id);
         return Response.getSuccessResp(res);
     }
