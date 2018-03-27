@@ -2,9 +2,47 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8" />
-    <title>bot</title>
 </head>
 <body>
-  <h1>hello world</h1>
+<linkrel="stylesheet" href="/vendor/jquery-typeahead/dist/jquery.typeahead.min.css">
+<!-- Required JavaScript -->
+<script src="http://www.jq22.com/jquery/jquery-1.10.2.js"></script>
+<scriptsrc=" endor="" query-typeahead="" ist="" query.typeahead.min.js"="">
+<title>bot</title>
+<script>$.typeahead({
+    input: ".js-typeahead",
+    order: "asc",
+    source: {
+        groupName: {
+            // Ajax Request
+            ajax: {
+                url: "..."
+            }
+        }
+    },
+    callback: {
+        onClickBefore: function() {...
+        }
+    }
+});</script>
+<h1>问答机器人</h1>
+<form>
+    <divclass="typeahead__container">
+        <divclass="typeahead__field">
+            <spanclass="typeahead__query">
+                <inputclass="js-typeahead" name="q" type="search" autocomplete="off">
+                    <spanclass="typeahead__button">
+                        <buttontype="submit">
+                            <spanclass="typeahead__search-icon">
+                            </spanclass="typeahead__search-icon">
+                        </buttontype="submit">
+                    </spanclass="typeahead__button">
+                </inputclass="js-typeahead">
+            </spanclass="typeahead__query">
+        </divclass="typeahead__field">
+    </divclass="typeahead__container">
+</form>
+</scriptsrc=">
+</linkrel="stylesheet">
 </body>
 </html>
