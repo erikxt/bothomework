@@ -76,8 +76,20 @@ public class SearchService {
         }
     }
 
+    private static List<QaEntity> allQaEntity;
+
+    /**
+     * 缓存问答库
+     * @return
+     */
+    private synchronized  List<QaEntity> getAllQaEntities() {
+        if(allQaEntity == null)
+            allQaEntity = qaRepository.findAll();
+        return allQaEntity;
+    }
+
     private void initIndexs(IndexWriter indexWriter) throws IOException {
-        List<QaEntity> allQaEntities = qaRepository.findAll();
+        List<QaEntity> allQaEntities = getAllQaEntities();
         Map<String, Integer> map = redisRepository.getAllAccessCountMap();
         for (QaEntity qaEntity : allQaEntities) {
             Document doc = new Document();

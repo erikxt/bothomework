@@ -35,6 +35,7 @@ public class BotService {
     @PostConstruct
     public void init() {
         List<QaEntity> allEntities = qaRepository.findAll();
+        // 暂时不做定时刷新
         if (allEntities != null)
             cacheMap = allEntities.stream().collect(Collectors.toConcurrentMap(QaEntity::getId, qaEntity -> qaEntity));
     }

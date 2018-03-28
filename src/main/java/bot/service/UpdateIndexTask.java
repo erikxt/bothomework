@@ -11,8 +11,6 @@ public class UpdateIndexTask {
 
     @Scheduled(initialDelay = 15_000, fixedRate = 30_000)
     public void work() {
-        long now = System.currentTimeMillis();
         searchService.reloadIndex();
-        System.out.println("time cost: " + (System.currentTimeMillis() - now));
     }
 }

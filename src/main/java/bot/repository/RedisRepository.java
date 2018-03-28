@@ -1,7 +1,5 @@
 package bot.repository;
 
-import bot.entity.QaEntity;
-import org.apache.log4j.Logger;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Repository;
 
@@ -18,8 +16,6 @@ public class RedisRepository {
     private StringRedisTemplate stringRedisTemplate;
 
     private final static String PREFIX = "click:count:";
-
-    private static Logger logger = Logger.getLogger(QaEntity.class);
 
     /**
      * 增加访问计数
