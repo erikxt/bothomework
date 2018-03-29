@@ -112,13 +112,13 @@ public class SearchService {
         Map<String, Integer> map = redisRepository.getAllAccessCountMap();
         for (QaEntity qaEntity : allQaEntities) {
             Document doc = new Document();
-            doc.add(new StringField("id", qaEntity.getId().toString(), Field.Store.YES));
+            doc.add(new StringField("id", qaEntity.getId(), Field.Store.YES));
             // 关键字用逗号分词即可  替换成一个空格方便处理
             String processKeywords = qaEntity.getKeywords().replaceAll("，", ",")
                     .replaceAll(",", " ").toLowerCase();
             // printAnalyzerDoc(processKeywords);
             doc.add(new TextField("keywords", processKeywords, Field.Store.NO));
-            Integer count = map.get(qaEntity.getId().toString());
+            Integer count = map.get(qaEntity.getId());
             doc.add(new IntPoint("counts", count != null ? count : 0));
             doc.add(new NumericDocValuesField("counts", count != null ? count : 0));
             // 防止重复索引
@@ -159,9 +159,9 @@ public class SearchService {
         for (ScoreDoc scoreDoc : topDocs.scoreDocs) {
             //取得对应的文档对象
             Document document = indexSearcher.doc(scoreDoc.doc);
-            /*logger.info("id：" + document.get("ID"));
+            logger.info("id：" + document.get("ID"));
             logger.info("" + indexSearcher.explain(query, scoreDoc.doc));
-            logger.info(document.get("id") + " " + scoreDoc.score);*/
+            logger.info(document.get("id") + " " + scoreDoc.score);
             ret.add(document.get("id"));
         }
         return ret;
