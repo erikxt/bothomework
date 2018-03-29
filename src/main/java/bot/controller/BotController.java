@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -26,13 +27,15 @@ public class BotController {
     @RequestMapping("/getquestions")
     public Response getQuestions(@RequestParam(value = "words") String words) {
         List<Map<String, Object>> retList = null;
+        Map<String, Object> ret = new HashMap<>();
         try {
             retList = botService.getQuestions(words);
+            ret.put("questions", retList);
         } catch (IOException e) {
             logger.error("getquestions error ", e);
             return Response.getErrorResp("error");
         }
-        return Response.getSuccessResp(retList);
+        return Response.getSuccessResp(ret);
     }
 
     @RequestMapping("/getanswer")
