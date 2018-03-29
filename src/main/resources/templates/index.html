@@ -51,6 +51,7 @@
 			source: {
 				questions: {
 					display: "question",
+                    // 获取候选问题
 					ajax: function (query) {
 						return {
 							type: "POST",
@@ -76,6 +77,7 @@
 			debug: true
 		});
 
+		// 获取答案
         $("#submitID").click(function () {
             var val = $("#qID").val();
             if(val == 'undefined' || val == '')
