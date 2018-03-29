@@ -26,6 +26,6 @@ mvn clean package docker:build
 ```
 ### 运行构建的应用容器，并链接到redis容器
 ```
-docker run run --name mywork -p 8080:8080 --link some-redis:redis bot-homework 
+docker run --name mywork -p 8080:8080 --link some-redis:redis some-mysql:mydb bot-homework 
 ```
 浏览器输入服务器IP:端口（8080）  访问应用

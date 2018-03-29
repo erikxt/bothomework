@@ -17,6 +17,9 @@ import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.FSDirectory;
 import org.apache.lucene.store.RAMDirectory;
 import org.springframework.stereotype.Service;
+import org.wltea.analyzer.cfg.Configuration;
+import org.wltea.analyzer.cfg.DefaultConfig;
+import org.wltea.analyzer.dic.Dictionary;
 import org.wltea.analyzer.lucene.IKAnalyzer;
 
 import javax.annotation.PostConstruct;
@@ -25,9 +28,7 @@ import javax.annotation.Resource;
 import java.io.IOException;
 import java.io.StringReader;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 public class SearchService {
@@ -54,12 +55,30 @@ public class SearchService {
 //        directory = FSDirectory.open(Paths.get("indexDir/"));
         directory = new RAMDirectory();
         ikAnalyzer = new IKAnalyzer();
+        // 初始化IK  方便添加关键词
+        Configuration configuration = DefaultConfig.getInstance();
+        Dictionary.initial(configuration);
+        addKeywordsToDic();
         reloadIndex();
 
         //创建索引的读取器
         indexReader = DirectoryReader.open(directory);
         //创建一个索引的查找器，来检索索引库
         indexSearcher = new IndexSearcher(indexReader);
+    }
+
+    private void addKeywordsToDic() {
+        List<QaEntity> allQaEntities = getAllQaEntities();
+        Set<String> dictSet = new HashSet<>();
+        for(QaEntity entity : allQaEntities) {
+            String keywords = entity.getKeywords();
+            String[] keyArr = keywords.replaceAll("，", ",").split(",");
+            if(keyArr != null) {
+                for(String keyword : keyArr)
+                    dictSet.add(keyword);
+            }
+        }
+        Dictionary.getSingleton().addWords(dictSet);
     }
 
     public void reloadIndex() {
