@@ -19,7 +19,7 @@
                         <input id="qID" type="hidden" />
                     </span>
                     <span class="typeahead__button">
-                        <button id="submit">
+                        <button id="submitID">
 							<i class="typeahead__search-icon"></i>
                         </button>
                     </span>
@@ -68,7 +68,7 @@
 
 					// You can do a simple window.location of the item.href
                     alert(JSON.stringify(item));
-                    $("#qID").val(item.answer);
+                    $("#qID").val(item.id);
 
 				},
 				onSendRequest: function (node, query) {
@@ -81,13 +81,13 @@
 			debug: true
 		});
 
-        $("#id").click(function () {
+        $("#submitID").click(function () {
             var val = $("#qID").val();
             alert(val);
             if(val == 'undefined' || val == '')
                 alert("请输入有效问题")
-            $.get("/bot/getanswer?id=" + val, function (data) {
-
+            $.get("/bot/getanswer?id=" + val, function (result) {
+                alert(result.data.answer);
             })
         })
 	</script>
