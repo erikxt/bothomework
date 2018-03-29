@@ -68,7 +68,7 @@
 
 					// You can do a simple window.location of the item.href
                     alert(JSON.stringify(item));
-                    $("qId").value(item.answer);
+                    $("qId").val(item.answer);
 
 				},
 				onSendRequest: function (node, query) {
@@ -87,6 +87,12 @@
 
         $("#id").click(function () {
             var val = $("qId").value();
+            alert(val);
+            if(val == 'undefined' || val == '')
+                alert("请输入有效问题")
+            $.get("/bot/getanswer?id=" + val, function (data) {
+
+            })
         })
 	</script>
 </div>
