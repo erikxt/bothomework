@@ -10,12 +10,6 @@
     <script src="jquery.typeahead.min.js"></script>
     <title>bot</title>
     <script>
-		var remote_questions = new Bloodhound({
-            datumTokenizer: Bloodhound.tokenizers.obj.whitespace('CityName'),
-            queryTokenizer: Bloodhound.tokenizers.whitespace,
-            // 在文本框输入字符时才发起请求
-            remote: '././ajax/GetCities?q=%QUERY'
-        });
         $.typeahead({
 			input: ".js-typeahead",
 			order: "asc",
