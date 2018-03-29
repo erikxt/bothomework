@@ -16,12 +16,22 @@
 			dynamic: true,
 			delay: 500,
 			emptyTemplate: "no result for {{query}}",
+		    template: function (query, item) {
+		    		 
+		        return '<span class="row">' +
+		            '<span class="avatar">' +
+		                '<img src="{{avatar}}">' +
+		            "</span>" +
+		            '<span class="username">{{question}}</span>' +
+		            '<span class="id">({{id}})</span>' +
+		        "</span>"
+		    },
 			source: {
 				question : {
 					display: "question",
 					ajax: function (query) {
 		                return {
-		                    type: "GET",
+		                    type: "POST",
 		                    url: "/bot/getquestions",
 		                    path: "data",
 		                    data: {
@@ -50,20 +60,20 @@
     </script>
     <div style="text-align:center">
         <h1>问答机器人</h1>
-        <form>
+        <! -- <form> -->
             <div class="typeahead__container">
                 <div class="typeahead__field">
                     <span class="typeahead__query">
                         <input class="js-typeahead" name="words" type="search" placeholder="请输入问题" autocomplete="off" />
                     </span>
                     <span class="typeahead__button">
-                        <button type="submit">
+                        <button id="submit">
 							<i class="typeahead__search-icon"></i>
                         </button>
                     </span>
                 </div>
             </div>
-        </form>
+        <! -- </form> -->
     </div>
 </body>
 </html>
