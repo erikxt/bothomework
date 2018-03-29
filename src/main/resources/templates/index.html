@@ -16,8 +16,9 @@
             <div class="typeahead__field">
                     <span class="typeahead__query">
                         <input class="js-typeahead" name="words" type="search" placeholder="请输入问题" autocomplete="off"/>
+                        <input id="qID" type="hidden" />
                     </span>
-                <span class="typeahead__button">
+                    <span class="typeahead__button">
                         <button id="submit">
 							<i class="typeahead__search-icon"></i>
                         </button>
@@ -66,7 +67,8 @@
 				onClick: function (node, a, item, event) {
 
 					// You can do a simple window.location of the item.href
-
+                    alert(JSON.stringify(item));
+                    $("qId").value(item.answer);
 
 				},
 				onSendRequest: function (node, query) {
@@ -82,6 +84,10 @@
 			},
 			debug: true
 		});
+
+        $("#id").click(function () {
+            var val = $("qId").value();
+        })
 	</script>
 </div>
 </body>
