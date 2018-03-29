@@ -16,16 +16,19 @@
 			dynamic: true,
 			delay: 500,
 			emptyTemplate: "no result for {{query}}",
-			ajax: function (query) {
-                return {
-                    type: "GET",
-                    url: "/bot/getquestions",
-                    path: "data",
-                    data: {
-                        words: "{{query}}"
-                    }
-                }
-            }
+			source: {
+				display: "question",
+				ajax: function (query) {
+	                return {
+	                    type: "GET",
+	                    url: "/bot/getquestions",
+	                    path: "data",
+	                    data: {
+	                        words: "{{query}}"
+	                    }
+	                }
+	            }
+			}
 		});
     </script>
     <div style="text-align:center">
