@@ -18,13 +18,18 @@
                         <input class="js-typeahead" name="words" type="search" placeholder="请输入问题" autocomplete="off"/>
                     </span>
                 <span class="typeahead__button">
-                        <button id="submit">
+                        <button type="submit">
 							<i class="typeahead__search-icon"></i>
                         </button>
                     </span>
             </div>
         </div>
     </form>
+	
+	
+	<div style="margin: 30px auto;" id="answer">
+		
+	</div>
 	
 	<script>
 		$('.js-typeahead').typeahead({
@@ -61,7 +66,7 @@
 				onClick: function (node, a, item, event) {
 
 					// You can do a simple window.location of the item.href
-					alert(JSON.stringify(item));
+
 
 				},
 				onSendRequest: function (node, query) {
@@ -69,7 +74,10 @@
 				},
 				onReceiveRequest: function (node, query) {
 					console.log('request is received')
-				}
+				},
+                onSubmit: function (node, form, item, event) {
+                    alert(JSON.stringify(item));
+                }
 			},
 			debug: true
 		});
