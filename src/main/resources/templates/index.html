@@ -9,50 +9,7 @@
 </head>
 <body>
 <title>bot</title>
-<script>
-    $('.js-typeahead').typeahead({
-        order: "asc",
-        dynamic: true,
-        delay: 500,
-        emptyTemplate: "no result for {{query}}",
-        template: function (query, item) {
-            return '<span class="row">' +
-                '<span class="question">{{question}}</span>' +
-                '</span>'
-        },
-        source: {
-            questions: {
-                display: "question",
-                ajax: function (query) {
-                    return {
-                        type: "POST",
-                        url: "/bot/getquestions",
-                        path: "data.questions",
-                        data: {
-                            words: "{{query}}"
-                        }
-                    }
-                }
-            }
-        },
-        callback: {
-            onClick: function (node, a, item, event) {
-
-                // You can do a simple window.location of the item.href
-                alert(JSON.stringify(item));
-
-            },
-            onSendRequest: function (node, query) {
-                console.log('request is sent')
-            },
-            onReceiveRequest: function (node, query) {
-                console.log('request is received')
-            }
-        },
-        debug: true
-    });
-</script>
-<div style="text-align:center">
+<div style="width: 100%; max-width: 800px; margin: 0 auto;">
     <h1>问答机器人</h1>
     <form>
         <div class="typeahead__container">
@@ -68,6 +25,50 @@
             </div>
         </div>
     </form>
+	
+	<script>
+		$('.js-typeahead').typeahead({
+			order: "asc",
+			dynamic: true,
+			delay: 500,
+			emptyTemplate: "no result for {{query}}",
+			template: function (query, item) {
+				return '<span class="row">' +
+					'<span class="question">{{question}}</span>' +
+					'</span>'
+			},
+			source: {
+				questions: {
+					display: "question",
+					ajax: function (query) {
+						return {
+							type: "POST",
+							url: "/bot/getquestions",
+							path: "data.questions",
+							data: {
+								words: "{{query}}"
+							}
+						}
+					}
+				}
+			},
+			callback: {
+				onClick: function (node, a, item, event) {
+
+					// You can do a simple window.location of the item.href
+					alert(JSON.stringify(item));
+
+				},
+				onSendRequest: function (node, query) {
+					console.log('request is sent')
+				},
+				onReceiveRequest: function (node, query) {
+					console.log('request is received')
+				}
+			},
+			debug: true
+		});
+	</script>
 </div>
 </body>
 </html>
