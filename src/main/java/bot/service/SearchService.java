@@ -123,6 +123,7 @@ public class SearchService {
             doc.add(new IntPoint("counts", count != null ? count : 0));
             doc.add(new NumericDocValuesField("counts", count != null ? count : 0));
             // 防止重复索引
+            logger.info(qaEntity.getId() + " = " +count);
             indexWriter.updateDocument(new Term("id", qaEntity.getId()), doc);
         }
     }
