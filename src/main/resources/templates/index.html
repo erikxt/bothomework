@@ -21,21 +21,39 @@
 		            '<span class="question">{{question}}</span>' +
 		        '</span>'
 		    },
-			source: {
-				question : {
-					display: "question",
-					ajax: function (query) {	
-		                return {
-		                    type: "POST",
-		                    url: "/bot/getquestions",
-		                    path: "data",
-		                    data: {
-		                        words: "{{query}}"
-		                    }
-		                }
-		            }
-				}
-			},
+			user: {
+            display: "username",
+            href: "https://www.github.com/{{username|slugify}}",
+            data: [{
+                "id": 415849,
+                "username": "an inserted user that is not inside the database",
+                "avatar": "https://avatars3.githubusercontent.com/u/415849",
+                "status":  "contributor"
+            }],
+            ajax: function (query) {
+                return {
+                    type: "GET",
+                    url: "/jquerytypeahead/user_v1.json",
+                    path: "data.user",
+                    data: {
+                        q: "{{query}}"
+                    },
+                    callback: {
+                        done: function (data) {
+                            for (var i = 0; i < data.data.user.length; i++) {
+                                if (data.data.user[i].username === 'running-coder') {
+                                    data.data.user[i].status = 'owner';
+                                } else {
+                                    data.data.user[i].status = 'contributor';
+                                }
+                            }
+                            return data;
+                        }
+                    }
+                }
+            }
+ 
+        },
 		callback: {
 			onClick: function (node, a, item, event) {
 	 
