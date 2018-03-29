@@ -69,11 +69,8 @@
                     $("#qID").val(item.id);
 
 				},
-				onSendRequest: function (node, query) {
-					console.log('request is sent')
-				},
-				onReceiveRequest: function (node, query) {
-					console.log('request is received')
+				onCancel: function (node, item, event) {
+                    $('#qID').val('')
 				}
 			},
 			debug: true
