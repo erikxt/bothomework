@@ -29,8 +29,12 @@
 	<script>
 		$('.js-typeahead').typeahead({
 			order: "asc",
+			minLength: 1,
 			dynamic: true,
 			delay: 500,
+			backdrop: {
+				"background-color": "#fff"
+			},
 			emptyTemplate: "no result for {{query}}",
 			template: function (query, item) {
 				return '<span class="row">' +
