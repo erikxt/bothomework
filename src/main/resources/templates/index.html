@@ -28,8 +28,8 @@
 
 	
 	
-	<div style="margin: 30px auto;" id="answer">
-		
+	<div style="margin: 30px auto;">
+		<textarea id="answer"></textarea>
 	</div>
 	
 	<script>
@@ -87,8 +87,8 @@
                 $.get("/bot/getanswer?id=" + val, function (result) {
                     $("#answer").val(result.data.answer);
                 })
-                $('.js-typeahead').val('')
-                $('#qID').val('')
+                /*$('.js-typeahead').val('')
+                $('#qID').val('')*/
             }
         })
 	</script>
