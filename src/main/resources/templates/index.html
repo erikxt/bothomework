@@ -68,7 +68,7 @@
 
 					// You can do a simple window.location of the item.href
                     alert(JSON.stringify(item));
-                    $("qId").val(item.answer);
+                    $("#qID").val(item.answer);
 
 				},
 				onSendRequest: function (node, query) {
@@ -82,7 +82,7 @@
 		});
 
         $("#id").click(function () {
-            var val = $("qId").val();
+            var val = $("#qID").val();
             alert(val);
             if(val == 'undefined' || val == '')
                 alert("请输入有效问题")
