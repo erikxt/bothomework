@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/bot")
@@ -24,7 +25,7 @@ public class BotController {
 
     @RequestMapping("/getquestions")
     public Response getQuestions(@RequestParam(value = "words") String words) {
-        List retList = null;
+        List<Map<String, Object>> retList = null;
         try {
             retList = botService.getQuestions(words);
         } catch (IOException e) {

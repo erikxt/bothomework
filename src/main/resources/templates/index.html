@@ -10,25 +10,29 @@
     <script src="jquery.typeahead.min.js"></script>
     <title>bot</title>
     <script>
+		var remote_questions = new Bloodhound({
+            datumTokenizer: Bloodhound.tokenizers.obj.whitespace('CityName'),
+            queryTokenizer: Bloodhound.tokenizers.whitespace,
+            // 在文本框输入字符时才发起请求
+            remote: '././ajax/GetCities?q=%QUERY'
+        });
         $.typeahead({
-        input: ".js-typeahead",
-        order: "asc",
-        dynamic: true,
-        delay: 500,
-		emptyTemplate: "no result for {{query}}",
-        source: {
-            groupName: {
-                // Ajax Request
-                ajax: {
-                    url: "/bot/getquestions"
-                }
-            }
-        },
-        callback: {
-            onClickBefore: function() {
-            }
-        }
-    });
+			input: ".js-typeahead",
+			order: "asc",
+			dynamic: true,
+			delay: 500,
+			emptyTemplate: "no result for {{query}}",
+			ajax: function (query) {
+                return {
+                    type: "GET",
+                    url: "/bot/getquestions",
+                    path: "data",
+                    data: {
+                        words: "{{query}}"
+                    }
+                }
+            }
+		});
     </script>
     <div style="text-align:center">
         <h1>问答机器人</h1>
@@ -36,7 +40,7 @@
             <div class="typeahead__container">
                 <div class="typeahead__field">
                     <span class="typeahead__query">
-                        <input class="js-typeahead" name="q" type="search" autocomplete="off" />
+                        <input class="js-typeahead" name="words" type="search" placeholder="请输入问题" autocomplete="off" />
                     </span>
                     <span class="typeahead__button">
                         <button type="submit">
