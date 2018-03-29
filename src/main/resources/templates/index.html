@@ -17,16 +17,14 @@
 			delay: 500,
 			emptyTemplate: "no result for {{query}}",
 		    template: function (query, item) {
-		    		 
 		        return '<span class="row">'  +
-		            '<span class="username">{{question}}</span>' +
-		            '<span class="id">({{id}})</span>' +
-		        "</span>"
+		            '<span class="question">{{question}}</span>' +
+		        '</span>'
 		    },
 			source: {
 				question : {
 					display: "question",
-					ajax: function (query) {
+					ajax: function (query) {	
 		                return {
 		                    type: "POST",
 		                    url: "/bot/getquestions",
