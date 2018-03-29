@@ -76,17 +76,13 @@
 				},
 				onReceiveRequest: function (node, query) {
 					console.log('request is received')
-				},
-                onSubmit: function (node, form, item, event) {
-                    alert(JSON.stringify(item));
-                    form.preventDefault();
-                }
+				}
 			},
 			debug: true
 		});
 
         $("#id").click(function () {
-            var val = $("qId").value();
+            var val = $("qId").val();
             alert(val);
             if(val == 'undefined' || val == '')
                 alert("请输入有效问题")
