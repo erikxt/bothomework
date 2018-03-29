@@ -17,18 +17,35 @@
 			delay: 500,
 			emptyTemplate: "no result for {{query}}",
 			source: {
-				display: "question",
-				ajax: function (query) {
-	                return {
-	                    type: "GET",
-	                    url: "/bot/getquestions",
-	                    path: "data",
-	                    data: {
-	                        words: "{{query}}"
-	                    }
-	                }
-	            }
+				question : {
+					display: "question",
+					ajax: function (query) {
+		                return {
+		                    type: "GET",
+		                    url: "/bot/getquestions",
+		                    path: "data",
+		                    data: {
+		                        words: "{{query}}"
+		                    }
+		                }
+		            }
+				}
+			},
+		callback: {
+			onClick: function (node, a, item, event) {
+	 
+				// You can do a simple window.location of the item.href
+				alert(JSON.stringify(item));
+	 
+			},
+			onSendRequest: function (node, query) {
+				console.log('request is sent')
+			},
+			onReceiveRequest: function (node, query) {
+				console.log('request is received')
 			}
+		},
+		debug: true
 		});
     </script>
     <div style="text-align:center">
