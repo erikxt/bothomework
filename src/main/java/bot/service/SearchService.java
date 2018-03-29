@@ -70,11 +70,11 @@ public class SearchService {
     private void addKeywordsToDic() {
         List<QaEntity> allQaEntities = getAllQaEntities();
         Set<String> dictSet = new HashSet<>();
-        for(QaEntity entity : allQaEntities) {
+        for (QaEntity entity : allQaEntities) {
             String keywords = entity.getKeywords();
             String[] keyArr = keywords.replaceAll("，", ",").split(",");
-            if(keyArr != null) {
-                for(String keyword : keyArr)
+            if (keyArr != null) {
+                for (String keyword : keyArr)
                     dictSet.add(keyword);
             }
         }
@@ -87,8 +87,8 @@ public class SearchService {
             indexWriterConfig.setOpenMode(IndexWriterConfig.OpenMode.CREATE_OR_APPEND);
             try (IndexWriter indexWriter = new IndexWriter(directory, indexWriterConfig)) {
                 initIndexs(indexWriter);
-                // indexWriter.flush();
-                // indexWriter.commit();
+                indexWriter.flush();
+                indexWriter.commit();
             }
         } catch (IOException e) {
             logger.error("IO error ", e);
@@ -99,10 +99,11 @@ public class SearchService {
 
     /**
      * 缓存问答库
+     *
      * @return
      */
-    private synchronized  List<QaEntity> getAllQaEntities() {
-        if(allQaEntity == null)
+    private synchronized List<QaEntity> getAllQaEntities() {
+        if (allQaEntity == null)
             allQaEntity = qaRepository.findAll();
         return allQaEntity;
     }
