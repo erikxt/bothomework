@@ -65,9 +65,7 @@
 			},
 			callback: {
 				onClick: function (node, a, item, event) {
-
 					// You can do a simple window.location of the item.href
-                    alert(JSON.stringify(item));
                     $("#qID").val(item.id);
 
 				},
@@ -83,12 +81,13 @@
 
         $("#submitID").click(function () {
             var val = $("#qID").val();
-            alert(val);
             if(val == 'undefined' || val == '')
                 alert("请输入有效问题")
             $.get("/bot/getanswer?id=" + val, function (result) {
-                alert(result.data.answer);
+                $("#answer").val(result.data.answer);
             })
+            $('.js-typeahead').val('')
+            $('#qID').val('')
         })
 	</script>
 </div>
