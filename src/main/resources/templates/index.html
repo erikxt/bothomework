@@ -83,11 +83,13 @@
             var val = $("#qID").val();
             if(val == 'undefined' || val == '')
                 alert("请输入有效问题")
-            $.get("/bot/getanswer?id=" + val, function (result) {
-                $("#answer").val(result.data.answer);
-            })
-            $('.js-typeahead').val('')
-            $('#qID').val('')
+            else {
+                $.get("/bot/getanswer?id=" + val, function (result) {
+                    $("#answer").val(result.data.answer);
+                })
+                $('.js-typeahead').val('')
+                $('#qID').val('')
+            }
         })
 	</script>
 </div>
