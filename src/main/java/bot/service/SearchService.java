@@ -154,14 +154,14 @@ public class SearchService {
         }
 
         //打印查询到的记录数
-        logger.info("总共查询到" + topDocs.totalHits + "个文档");
+        /*logger.info("总共查询到" + topDocs.totalHits + "个文档");*/
         List<String> ret = new ArrayList<>();
         for (ScoreDoc scoreDoc : topDocs.scoreDocs) {
             //取得对应的文档对象
             Document document = indexSearcher.doc(scoreDoc.doc);
-            /*logger.info("id：" + document.get("ID"));*/
-            /*logger.info("" + indexSearcher.explain(query, scoreDoc.doc));*/
-            logger.info(document.get("id") + " " + scoreDoc.score);
+            /*logger.info("id：" + document.get("ID"));
+            logger.info("" + indexSearcher.explain(query, scoreDoc.doc));
+            logger.info(document.get("id") + " " + scoreDoc.score);*/
             ret.add(document.get("id"));
         }
         return ret;
