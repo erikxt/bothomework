@@ -1,74 +1,74 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8" />
+    <meta charset="UTF-8"/>
     <link rel="stylesheet" href="jquery.typeahead.min.css"/>
     <!-- Required JavaScript -->
     <script src="https://code.jquery.com/jquery-2.1.3.min.js"></script>
     <script src="jquery.typeahead.min.js"></script>
 </head>
 <body>
-    <title>bot</title>
-    <script>
-        $.typeahead({
-			input: ".js-typeahead",
-			order: "asc",
-			dynamic: true,
-			delay: 500,
-			emptyTemplate: "no result for {{query}}",
-		    template: function (query, item) {
-		        return '<span class="row">'  +
-		            '<span class="question">{{question}}</span>' +
-		        '</span>'
-		    },
-			source: {
-				question : {
-					display: "question",
-					ajax: function (query) {	
-		                return {
-		                    type: "POST",
-		                    url: "/bot/getquestions",
-		                    path: "data",
-		                    data: {
-		                        words: "{{query}}"
-		                    }
-		                }
-		            }
-				}
-			},
-		callback: {
-			onClick: function (node, a, item, event) {
-	 
-				// You can do a simple window.location of the item.href
-				alert(JSON.stringify(item));
-	 
-			},
-			onSendRequest: function (node, query) {
-				console.log('request is sent')
-			},
-			onReceiveRequest: function (node, query) {
-				console.log('request is received')
-			}
-		},
-		debug: true
-		});
-    </script>
-    <div style="text-align:center">
-        <h1>问答机器人</h1>
-		<form>
-            <div class="typeahead__container">
-                <div class="typeahead__field">
+<title>bot</title>
+<script>
+    $.typeahead({
+        input: ".js-typeahead",
+        order: "asc",
+        dynamic: true,
+        delay: 500,
+        emptyTemplate: "no result for {{query}}",
+        template: function (query, item) {
+            return '<span class="row">' +
+                '<span class="question">{{question}}</span>' +
+                '</span>'
+        },
+        source: {
+            questions: {
+                display: "question",
+                ajax: function (query) {
+                    return {
+                        type: "POST",
+                        url: "/bot/getquestions",
+                        path: "data",
+                        data: {
+                            words: "{{query}}"
+                        }
+                    }
+                }
+            }
+        },
+        callback: {
+            onClick: function (node, a, item, event) {
+
+                // You can do a simple window.location of the item.href
+                alert(JSON.stringify(item));
+
+            },
+            onSendRequest: function (node, query) {
+                console.log('request is sent')
+            },
+            onReceiveRequest: function (node, query) {
+                console.log('request is received')
+            }
+        },
+        debug: true
+    });
+</script>
+<div style="text-align:center">
+    <h1>问答机器人</h1>
+    <form>
+        <div class="typeahead__container">
+            <div class="typeahead__field">
                     <span class="typeahead__query">
-                        <input class="js-typeahead" name="words" type="search" placeholder="请输入问题" autocomplete="off" />
+                        <input class="js-typeahead" name="words" type="search" placeholder="请输入问题" autocomplete="off"/>
                     </span>
-                    <span class="typeahead__button">
+                <span class="typeahead__button">
                         <button id="submit">
 							<i class="typeahead__search-icon"></i>
                         </button>
                     </span>
-                </div>
             </div>
-		</form>
-    </div>
+        </div>
+    </form>
+</div>
 </body>
 </html>
